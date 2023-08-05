@@ -1,8 +1,7 @@
 model tiny
-.386
+.586
 .code
 includelib c:\libs\main_lib.lib
-include c:\libs\pstring\pstring.inc
 include c:\libs\heap\heap.inc
 include c:\libs\array\array.inc
 
@@ -10,18 +9,20 @@ VERSION M520
 
 LOCALS __
 
+public Matrix_New
+public Matrix_GetRangeCount
+public Matrix_GetColumnsCount
+public Matrix_GetElement
+public Matrix_SetElement
+
 matrix_head struc
-    db ?                    ;block type
+    db ?                    ;тип блока
     dw ?                    ;сегмент владельца
-    dw ?                    ;block size
+    dw ?                    ;размер блока
     MatrixType db ?         ;тип элемента матрицы
     MatrixTotalLength dw ?  ;общая длина
     MatrixRangeCount dw ?   ;количество строк
     MatrixColumnCount dw ?  ;количество столбцов
-ends
-
-matrix struc 
-    dd ?
 ends
 
 Matrix_New proc C far uses dx ds
@@ -135,25 +136,4 @@ Matrix_SetElement proc C far uses ds ecx
     ret
 endp
 
-Pstring_New PStr1
-TAB db 1, 9h
-NL db 1, 0
-
-Mat1 matrix <>
-
-main:
-    mov ax, @data
-    mov ds, ax
-    call $ method Heap:Init C, END_PROG
-    call Matrix_New C, BYTE, 4, 4
-    mov Mat1, eax
-    les di, Mat1
-    call Matrix_SetElement C, Mat1, 1, 0, 15
-    call Matrix_GetElement C, Mat1, 1, 0
-    call $ method PString:Int32Str C, ds offset PStr1, eax
-    call $ method PString:Write C, ds offset PStr1
-    call $ method PString:Write C, ds offset TAB
-    mov ah, 4ch
-    int 21h
-.fardata END_PROG
-end main
+end

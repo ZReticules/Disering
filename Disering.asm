@@ -30,7 +30,7 @@ ImgFCBTable struc
     LogicSize dw ?
 ends
 
-FileName db 'img4.ppm', 0
+FileName db 'img15.ppm', 0
 ImgBuf dd 4 dup (?)
 
 ImgWidth dw ?
